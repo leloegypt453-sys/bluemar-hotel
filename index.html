@@ -1,0 +1,574 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Blue Mar Hotel</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+/* LUXURY VARIABLES */
+:root {
+--primary: #002349;
+--accent: #C5A02D;
+--light-bg: #F8F9FA;
+--text-dark: #1A1A1A;
+--text-muted: #666666;
+--white: #FFFFFF;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Montserrat', sans-serif; scroll-behavior: smooth; }
+body { background-color: var(--light-bg); color: var(--text-dark); overflow-x: hidden; }
+h1, h2, h3, h4 { font-family: 'Playfair Display', serif; }
+
+#splash-screen {
+position: fixed;
+top: 0;
+left: 0;
+width: 100%;
+height: 100vh;
+background: var(--primary);
+z-index: 9999;
+display: flex;
+justify-content: center;
+align-items: center;
+transition: opacity 0.8s ease, visibility 0.8s ease, transform 0.8s ease;
+}
+#splash-screen img {
+width: 150px;
+height: 150px;
+object-fit: contain;
+border-radius: 50%;
+border: 2px solid var(--accent);
+padding: 5px;
+background: white;
+animation: pulse 1.5s infinite;
+}
+@keyframes pulse {
+0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(197, 160, 45, 0.7); }
+70% { transform: scale(1.1); box-shadow: 0 0 0 20px rgba(197, 160, 45, 0); }
+100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(197, 160, 45, 0); }
+}
+.splash-hidden {
+opacity: 0 !important;
+visibility: hidden !important;
+transform: translateY(-100%);
+}
+
+/* NAVBAR */
+header { position: fixed; top: 0; width: 100%; background: rgba(255, 255, 255, 0.98); padding: 15px 50px; display: flex; justify-content: space-between; align-items: center; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+.logo-area { display: flex; align-items: center; gap: 15px; }
+.logo-area img { height: 50px; width: 50px; object-fit: contain; border-radius: 50%; border: 1px solid var(--accent); padding: 2px;}
+.logo-text { font-size: 24px; font-weight: 700; color: var(--primary); letter-spacing: 2px; }
+.nav-links { display: flex; gap: 30px; list-style: none; }
+.nav-links a { text-decoration: none; color: var(--text-dark); font-size: 13px; font-weight: 500; text-transform: uppercase; letter-spacing: 1px; transition: 0.3s; }
+.nav-links a:hover { color: var(--accent); }
+.book-btn-nav { background: var(--primary); color: var(--white); padding: 10px 25px; border: none; font-size: 12px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; transition: 0.3s; }
+.book-btn-nav:hover { background: var(--accent); }
+
+/* HERO SECTION */
+#hero { height: 100vh; background: linear-gradient(rgba(0,35,73,0.5), rgba(0,35,73,0.7)), url('exterior.jpg') center/cover; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; color: var(--white); padding-top: 80px; }
+.hero-title { font-size: 70px; margin-bottom: 20px; text-shadow: 2px 2px 5px rgba(0,0,0,0.5); }
+.hero-subtitle { font-size: 18px; font-weight: 300; letter-spacing: 4px; text-transform: uppercase; margin-bottom: 40px; }
+.hero-btn { border: 1px solid var(--accent); background: rgba(197, 160, 45, 0.2); color: var(--white); padding: 15px 40px; font-size: 14px; text-transform: uppercase; letter-spacing: 2px; cursor: pointer; backdrop-filter: blur(5px); transition: 0.4s; text-decoration: none; }
+.hero-btn:hover { background: var(--accent); }
+
+/* SECTIONS COMMON */
+.section-padding { padding: 80px 50px; max-width: 1400px; margin: 0 auto; }
+.section-title { font-size: 40px; color: var(--primary); text-align: center; margin-bottom: 50px; }
+
+/* CARDS GRID */
+.grid-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
+.card { background: var(--white); border-radius: 5px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.05); transition: 0.3s; cursor: pointer; }
+.card:hover { transform: translateY(-10px); box-shadow: 0 15px 30px rgba(0,0,0,0.1); }
+.card-img { height: 250px; width: 100%; object-fit: cover; }
+.card-body { padding: 25px; text-align: center; }
+.card-title { font-size: 22px; color: var(--primary); margin-bottom: 10px; }
+.card-action { margin-top: 15px; color: var(--accent); font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
+
+/* MODALS (POPUPS) WITH LOBBY BACKGROUND */
+.modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.8)), url('lobby.jpg') center/cover; z-index: 2000; display: flex; justify-content: center; align-items: center; opacity: 0; visibility: hidden; transition: 0.3s; backdrop-filter: blur(5px); }
+.modal-overlay.active { opacity: 1; visibility: visible; }
+.modal-content { background: var(--white); width: 90%; max-width: 900px; max-height: 90vh; overflow-y: auto; border-radius: 5px; position: relative; display: flex; flex-direction: column; transform: scale(0.9); transition: 0.3s; }
+.modal-overlay.active .modal-content { transform: scale(1); }
+.close-btn { position: absolute; top: 15px; right: 20px; font-size: 30px; color: var(--primary); cursor: pointer; z-index: 10; background: white; border-radius: 50%; width: 40px; height: 40px; text-align: center; line-height: 40px; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
+
+/* ROOM DETAILS MODAL */
+.room-modal-grid { display: grid; grid-template-columns: 1fr 1fr; }
+.room-modal-img { width: 100%; height: 100%; object-fit: cover; min-height: 400px; }
+.room-modal-info { padding: 40px; display: flex; flex-direction: column; justify-content: center; }
+.price-tag { display: flex; gap: 20px; margin: 20px 0; padding: 15px 0; border-top: 1px solid #EEE; border-bottom: 1px solid #EEE; }
+.price-item h4 { font-family: 'Montserrat'; font-size: 12px; color: var(--text-muted); text-transform: uppercase; }
+.price-item span { font-size: 20px; font-weight: 700; color: var(--primary); }
+
+/* BOOKING FORM MODAL */
+.booking-form { padding: 40px; }
+.booking-form h2 { color: var(--primary); margin-bottom: 20px; text-align: center; }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 15px; }
+.form-group { display: flex; flex-direction: column; }
+.form-group label { font-size: 12px; font-weight: 600; margin-bottom: 5px; color: var(--text-muted); text-transform: uppercase; }
+.form-group input, .form-group select { padding: 12px; border: 1px solid #CCC; border-radius: 4px; font-size: 14px; }
+.payment-section { background: #F8F9FA; padding: 20px; border-radius: 5px; margin-top: 20px; border: 1px solid #EEE; }
+.cc-icons { display: flex; gap: 10px; margin-bottom: 15px; font-size: 24px; color: var(--primary); }
+.submit-btn { width: 100%; background: var(--accent); color: white; padding: 15px; border: none; font-size: 16px; font-weight: 700; text-transform: uppercase; margin-top: 20px; cursor: pointer; transition: 0.3s; }
+.submit-btn:hover { background: var(--primary); }
+.submit-btn:disabled { background: #ccc; cursor: not-allowed; }
+
+/* FOOTER */
+footer { background: var(--primary); color: white; padding: 60px 50px; text-align: center; }
+.footer-content { max-width: 800px; margin: 0 auto; display: flex; flex-direction: column; gap: 20px; }
+.footer-content i { font-size: 24px; color: var(--accent); }
+</style>
+</head>
+<body>
+
+<div id="splash-screen">
+<img src="logo.jpg" alt="Blue Mar Logo" onerror="this.src='https://placehold.co/150x150/002349/C5A02D?text=BM'">
+</div>
+
+<header>
+<div class="logo-area">
+<img src="logo.jpg" alt="Blue Mar" onerror="this.src='https://placehold.co/100x100/002349/C5A02D?text=BM'">
+<div class="logo-text">BLUE MAR</div>
+</div>
+<ul class="nav-links">
+<li><a href="#hero">Home</a></li>
+<li><a href="#rooms">Rooms & Suites</a></li>
+<li><a href="#dining">Dining</a></li>
+<li><a href="#facilities">Facilities</a></li>
+</ul>
+<button class="book-btn-nav" onclick="openBookingModal('Standard Room')">Book Now</button>
+</header>
+
+<section id="hero">
+<h1 class="hero-title">The Greek Spirit in Alexandria</h1>
+<p class="hero-subtitle">A New Horizon of Luxury</p>
+<a href="#rooms" class="hero-btn">Begin Your Journey</a>
+</section>
+
+<section id="rooms" class="section-padding">
+<h2 class="section-title">Accommodations</h2>
+<div class="grid-container">
+<div class="card" onclick="openRoomModal('Standard Room', 'standard.jpg', 'Experience comfort with our Greek-inspired design, featuring a cozy layout, flat-screen TV, minibar, and a view of the hotel surroundings. (30 m²)', '6,300 EGP', '$`180')">
+<img src="standard.jpg" class="card-img" onerror="this.src='https://placehold.co/600x400/EEE/002349?text=Standard+Room'">
+<div class="card-body">
+<h3 class="card-title">Standard Room</h3>
+<div class="card-action">View Details & Book <i class="fa-solid fa-arrow-right"></i></div>
+</div>
+</div>
+
+<div class="card" onclick="openRoomModal('Deluxe Single Room', 'deluxe.jpg', 'A more spacious layout enhancing relaxation. Includes premium bedding, a small workspace, and a beautiful window or balcony view. (45 m²)', '7,500 EGP', '`$220')">
+<img src="deluxe.jpg" class="card-img" onerror="this.src='https://placehold.co/600x400/EEE/002349?text=Deluxe+Single'">
+<div class="card-body">
+<h3 class="card-title">Deluxe Single Room</h3>
+<div class="card-action">View Details & Book <i class="fa-solid fa-arrow-right"></i></div>
+</div>
+</div>
+
+<div class="card" onclick="openRoomModal('Twin Room', 'twin.jpg', 'Furnished with two comfortable single beds with high-quality bedding. Perfect for friends or colleagues sharing a luxurious stay. (65 m²)', '8,000 EGP', '$`240')">
+<img src="twin.jpg" class="card-img" onerror="this.src='https://placehold.co/600x400/EEE/002349?text=Twin+Room'">
+<div class="card-body">
+<h3 class="card-title">Twin Room</h3>
+<div class="card-action">View Details & Book <i class="fa-solid fa-arrow-right"></i></div>
+</div>
+</div>
+
+<div class="card" onclick="openRoomModal('Luxury Double Room', 'double.jpg', 'Features a design inspired by the Greek style, with calm colors and elegant, high-quality furniture that creates a relaxing atmosphere. (100 m²)', '9,500 EGP', '`$280')">
+<img src="double.jpg" class="card-img" onerror="this.src='https://placehold.co/600x400/EEE/002349?text=Double+Room'">
+<div class="card-body">
+<h3 class="card-title">Luxury Double Room</h3>
+<div class="card-action">View Details & Book <i class="fa-solid fa-arrow-right"></i></div>
+</div>
+</div>
+
+<div class="card" onclick="openRoomModal('Deluxe Suite', 'suite-deluxe.jpg', 'Represents the highest level of luxury. Separate bedroom with King Size bed, independent living area, dining space, and panoramic balcony views. (159 m²)', '10,500 EGP', '$`280')">
+<img src="suite-deluxe.jpg" class="card-img" onerror="this.src='https://placehold.co/600x400/EEE/002349?text=Deluxe+Suite'">
+<div class="card-body">
+<h3 class="card-title">Deluxe Suite</h3>
+<div class="card-action">View Details & Book <i class="fa-solid fa-arrow-right"></i></div>
+</div>
+</div>
+
+<div class="card" onclick="openRoomModal('Sea View Suite', 'suite-sea.jpg', 'Combines comfort and luxury with a direct sea view, offering a spacious balcony or terrace to enjoy the Mediterranean atmosphere. (67-75 m²)', '11,000 EGP', '`$300')">
+<img src="suite-sea.jpg" class="card-img" onerror="this.src='https://placehold.co/600x400/EEE/002349?text=Sea+View+Suite'">
+<div class="card-body">
+<h3 class="card-title">Sea View Suite</h3>
+<div class="card-action">View Details & Book <i class="fa-solid fa-arrow-right"></i></div>
+</div>
+</div>
+
+<div class="card" onclick="openRoomModal('Pool View Suite', 'suite-pool.jpg', 'Offering a spacious and comfortable layout inspired by the Greek style. Includes a balcony overlooking the beautiful pool area. (120 m²)', '10,000 EGP', '$290')">
+<img src="suite-pool.jpg" class="card-img" onerror="this.src='https://placehold.co/600x400/EEE/002349?text=Pool+View+Suite'">
+<div class="card-body">
+<h3 class="card-title">Pool View Suite</h3>
+<div class="card-action">View Details & Book <i class="fa-solid fa-arrow-right"></i></div>
+</div>
+</div>
+</div>
+</section>
+
+<section id="dining" class="section-padding" style="background: var(--white);">
+<h2 class="section-title">Culinary Experience</h2>
+<div class="grid-container">
+<div class="card" onclick="openFacilityModal('Blue Mar Restaurant', 'bluemar-rest.jpg', 'Our signature Greek-Mediterranean restaurant serving traditional dishes in an authentic Alexandrian-Greek atmosphere.')">
+<img src="bluemar-rest.jpg" class="card-img" onerror="this.src='https://placehold.co/600x400/EEE/002349?text=Blue+Mar+Restaurant'">
+<div class="card-body">
+<h3 class="card-title">Blue Mar Restaurant</h3>
+<div class="card-action">Discover <i class="fa-solid fa-arrow-right"></i></div>
+</div>
+</div>
+
+<div class="card" onclick="openFacilityModal('Maria Restaurant', 'dining.jpg', 'Authentic Egyptian cuisine offering a journey from the South to Alexandrian seafood, served in an elegant atmosphere.')">
+<img src="dining.jpg" class="card-img" onerror="this.src='https://placehold.co/600x400/EEE/002349?text=Maria+Restaurant'">
+<div class="card-body">
+<h3 class="card-title">Maria Egyptian Restaurant</h3>
+<div class="card-action">Discover <i class="fa-solid fa-arrow-right"></i></div>
+</div>
+</div>
+
+<div class="card" onclick="openFacilityModal('The Pool Bar', 'pool.jpg', 'Enjoy fresh Mediterranean snacks, fresh juices, ice cream, and signature beverages by our pristine infinity pool.')">
+<img src="pool.jpg" class="card-img" onerror="this.src='https://placehold.co/600x400/EEE/002349?text=Pool+Bar'">
+<div class="card-body">
+<h3 class="card-title">The Pool Bar</h3>
+<div class="card-action">Discover <i class="fa-solid fa-arrow-right"></i></div>
+</div>
+</div>
+</div>
+</section>
+
+<section id="facilities" class="section-padding">
+<h2 class="section-title">Bespoke Facilities</h2>
+<div class="grid-container">
+<div class="card" onclick="openFacilityModal('Spa & Wellness', 'spa.jpg', 'Traditional hydrotherapy rituals and massages using Mediterranean herbs and olive oil.')">
+<div class="card-body" style="padding: 40px;">
+<i class="fa-solid fa-spa" style="font-size: 50px; color: var(--primary); margin-bottom: 20px;"></i>
+<h3 class="card-title">Spa & Wellness</h3>
+</div>
+</div>
+
+<div class="card" onclick="openFacilityModal('Elite Gym', 'gym.jpg', 'Fully equipped fitness center with state-of-the-art TechnoGym equipment.')">
+<div class="card-body" style="padding: 40px;">
+<i class="fa-solid fa-dumbbell" style="font-size: 50px; color: var(--primary); margin-bottom: 20px;"></i>
+<h3 class="card-title">Elite Gym</h3>
+</div>
+</div>
+
+<div class="card" onclick="openFacilityModal('Kids Area', 'kids.jpg', 'A safe and entertaining environment designed specifically for our younger guests.')">
+<div class="card-body" style="padding: 40px;">
+<i class="fa-solid fa-child-reaching" style="font-size: 50px; color: var(--primary); margin-bottom: 20px;"></i>
+<h3 class="card-title">Kids Area</h3>
+</div>
+</div>
+
+<div class="card" onclick="openFacilityModal('VR Room', 'vr.jpg', 'An interactive historical tour room offering Virtual Reality experiences of Alexandria and Greece.')">
+<div class="card-body" style="padding: 40px;">
+<i class="fa-solid fa-vr-cardboard" style="font-size: 50px; color: var(--primary); margin-bottom: 20px;"></i>
+<h3 class="card-title">VR Experience</h3>
+</div>
+</div>
+
+<div class="card" onclick="openFacilityModal('Gift Shop', 'gift.jpg', 'Offering authentic local products and souvenirs inspired by the Greek and Alexandrian heritage.')">
+<div class="card-body" style="padding: 40px;">
+<i class="fa-solid fa-gift" style="font-size: 50px; color: var(--primary); margin-bottom: 20px;"></i>
+<h3 class="card-title">Gift Shop</h3>
+</div>
+</div>
+
+<div class="card" onclick="openFacilityModal('Photo Booth', 'photo.jpg', 'Capture your beautiful moments with our dedicated photo booth area featuring stunning backgrounds.')">
+<div class="card-body" style="padding: 40px;">
+<i class="fa-solid fa-camera" style="font-size: 50px; color: var(--primary); margin-bottom: 20px;"></i>
+<h3 class="card-title">Photo Booth</h3>
+</div>
+</div>
+
+<div class="card" onclick="openEventModal()" style="grid-column: 1 / -1; max-width: 400px; margin: 0 auto;">
+<div class="card-body" style="padding: 40px; background: var(--primary); color: white;">
+<i class="fa-solid fa-handshake-simple" style="font-size: 50px; color: var(--accent); margin-bottom: 20px;"></i>
+<h3 class="card-title" style="color: white;">Greek Event Hall</h3>
+<p style="font-size: 12px; margin-top: 10px;">Click to reserve for events</p>
+</div>
+</div>
+</div>
+</section>
+
+<footer>
+<div class="footer-content">
+<img src="logo.jpg" style="width: 80px; margin: 0 auto; border-radius: 50%;" onerror="this.style.display='none'">
+<h2 style="letter-spacing: 3px;">BLUE MAR HOTEL</h2>
+<p><i class="fa-solid fa-location-dot"></i> Alexandria Corniche, Alexandria, Egypt</p>
+<p><i class="fa-solid fa-phone"></i> +20 123 456 7890 | reservations@bluemar.com</p>
+<p style="margin-top: 20px; font-size: 12px; opacity: 0.6;">© 2026 Blue Mar Hotel. All rights reserved.</p>
+</div>
+</footer>
+
+<div class="modal-overlay" id="roomModal">
+<div class="modal-content room-modal-grid">
+<div class="close-btn" onclick="closeModal('roomModal')">×</div>
+<img id="rm-img" src="" class="room-modal-img">
+<div class="room-modal-info">
+<h2 id="rm-title" style="color: var(--primary); font-size: 32px; margin-bottom: 15px;"></h2>
+<p id="rm-desc" style="line-height: 1.6; color: var(--text-muted);"></p>
+
+<div class="price-tag">
+<div class="price-item">
+<h4>Egyptians</h4>
+<span id="rm-egp"></span>
+</div>
+<div class="price-item">
+<h4>Foreigners</h4>
+<span id="rm-usd"></span>
+</div>
+</div>
+
+<ul style="list-style: none; margin-bottom: 25px; color: var(--text-muted); font-size: 14px;">
+<li style="margin-bottom: 10px;"><i class="fa-solid fa-check" style="color: var(--accent);"></i> Smart TV & High-Speed Wi-Fi</li>
+<li style="margin-bottom: 10px;"><i class="fa-solid fa-check" style="color: var(--accent);"></i> Greek-inspired Furniture</li>
+<li style="margin-bottom: 10px;"><i class="fa-solid fa-check" style="color: var(--accent);"></i> 24-hour Room Service</li>
+</ul>
+
+<button class="submit-btn" onclick="proceedToBook()">Book This Room</button>
+</div>
+</div>
+</div>
+
+<div class="modal-overlay" id="facilityModal">
+<div class="modal-content" style="max-width: 600px;">
+<div class="close-btn" onclick="closeModal('facilityModal')">×</div>
+<img id="fac-img" src="" style="width: 100%; height: 300px; object-fit: cover;">
+<div style="padding: 30px; text-align: center;">
+<h2 id="fac-title" style="color: var(--primary); margin-bottom: 15px;"></h2>
+<p id="fac-desc" style="color: var(--text-muted); line-height: 1.6;"></p>
+</div>
+</div>
+</div>
+
+<div class="modal-overlay" id="bookingModal">
+<div class="modal-content booking-form" style="max-width: 700px;">
+<div class="close-btn" onclick="closeModal('bookingModal')">×</div>
+<h2>Secure Reservation</h2>
+<form id="hotel-booking-form">
+<div class="form-row">
+<div class="form-group">
+<label>Check-In Date</label>
+<input type="date" name="Check-In" required>
+</div>
+<div class="form-group">
+<label>Check-Out Date</label>
+<input type="date" name="Check-Out" required>
+</div>
+</div>
+<div class="form-row">
+<div class="form-group">
+<label>Room Type</label>
+<select id="book-room-select" name="Room_Type">
+<option>Standard Room</option>
+<option>Deluxe Single Room</option>
+<option>Twin Room</option>
+<option>Luxury Double Room</option>
+<option>Deluxe Suite</option>
+<option>Sea View Suite</option>
+<option>Pool View Suite</option>
+</select>
+</div>
+<div class="form-group">
+<label>Guests</label>
+<select name="Guests"><option>1 Adult</option><option>2 Adults</option><option>Family (2+2)</option></select>
+</div>
+</div>
+
+<div class="form-group" style="margin-bottom: 15px;">
+<label>Your Email Address</label>
+<input type="email" name="Guest_Email" placeholder="To receive confirmation" required>
+</div>
+
+<div class="payment-section">
+<h3 style="font-size: 16px; margin-bottom: 15px; color: var(--primary);">Payment Details (Secured)</h3>
+<div class="cc-icons">
+<i class="fa-brands fa-cc-visa"></i>
+<i class="fa-brands fa-cc-mastercard"></i>
+</div>
+<div class="form-group" style="margin-bottom: 15px;">
+<label>Cardholder Name</label>
+<input type="text" name="Cardholder_Name" placeholder="Name on card" required>
+</div>
+<div class="form-group" style="margin-bottom: 15px;">
+<label>Card Number (Simulation)</label>
+<input type="text" placeholder="XXXX XXXX XXXX XXXX" maxlength="19" required>
+</div>
+<div class="form-row">
+<div class="form-group">
+<label>Expiry Date</label>
+<input type="text" placeholder="MM/YY" required>
+</div>
+<div class="form-group">
+<label>CVV</label>
+<input type="text" placeholder="123" maxlength="3" required>
+</div>
+</div>
+</div>
+
+<button type="submit" class="submit-btn" id="booking-submit-btn">Confirm Reservation</button>
+</form>
+</div>
+</div>
+
+<div class="modal-overlay" id="eventModal">
+<div class="modal-content booking-form" style="max-width: 600px;">
+<div class="close-btn" onclick="closeModal('eventModal')">×</div>
+<h2>Reserve Event Hall</h2>
+<p style="text-align: center; color: var(--text-muted); margin-bottom: 20px;">Book our authentic Greek Event Hall for your special occasion.</p>
+<form id="event-hall-form">
+<div class="form-row">
+<div class="form-group">
+<label>Event Date</label>
+<input type="date" name="Event_Date" required>
+</div>
+<div class="form-group">
+<label>Event Type</label>
+<select name="Event_Type"><option>Wedding</option><option>Corporate Conference</option><option>Gala Dinner</option></select>
+</div>
+</div>
+<div class="form-row">
+<div class="form-group">
+<label>Number of Tables (10 pax/table)</label>
+<input type="number" name="Tables_Count" min="5" max="50" placeholder="e.g. 15" required>
+</div>
+<div class="form-group">
+<label>Catering Type</label>
+<select name="Catering_Type"><option>Greek Buffet</option><option>Alexandrian Seafood</option><option>International</option></select>
+</div>
+</div>
+<div class="form-group" style="margin-top: 15px;">
+<label>Contact Email</label>
+<input type="email" name="Organizer_Email" placeholder="your@email.com" required>
+</div>
+<button type="submit" class="submit-btn" id="event-submit-btn">Request Quote & Hold Date</button>
+</form>
+</div>
+</div>
+
+<script>
+// 0. Splash Screen Logic
+window.addEventListener('load', function() {
+// Wait for 2 seconds then hide the splash screen
+setTimeout(function() {
+document.getElementById('splash-screen').classList.add('splash-hidden');
+}, 2000);
+});
+
+// 1. Open Room Details
+function openRoomModal(title, image, desc, egpPrice, usdPrice) {
+document.getElementById('rm-title').innerText = title;
+document.getElementById('rm-img').src = image;
+document.getElementById('rm-img').onerror = function() { this.src = 'https://placehold.co/600x600/EEE/002349?text=' + title.replace(/ /g, '+'); };
+document.getElementById('rm-desc').innerText = desc;
+document.getElementById('rm-egp').innerText = egpPrice;
+document.getElementById('rm-usd').innerText = usdPrice;
+
+document.getElementById('book-room-select').value = title;
+document.getElementById('roomModal').classList.add('active');
+}
+
+// 2. Open Facility Details
+function openFacilityModal(title, image, desc) {
+document.getElementById('fac-title').innerText = title;
+document.getElementById('fac-img').src = image;
+document.getElementById('fac-img').onerror = function() { this.src = 'https://placehold.co/800x400/EEE/002349?text=' + title.replace(/ /g, '+'); };
+document.getElementById('fac-desc').innerText = desc;
+document.getElementById('facilityModal').classList.add('active');
+}
+
+// 3. Open Booking Forms
+function openBookingModal(roomName) {
+if(roomName) {
+let select = document.getElementById('book-room-select');
+for(let i=0; i<select.options.length; i++) {
+if(select.options[i].text === roomName) select.selectedIndex = i;
+}
+}
+document.getElementById('bookingModal').classList.add('active');
+}
+
+function proceedToBook() {
+closeModal('roomModal');
+setTimeout(() => { openBookingModal(); }, 300);
+}
+
+function openEventModal() {
+document.getElementById('eventModal').classList.add('active');
+}
+
+// 4. Close Modals
+function closeModal(id) {
+document.getElementById(id).classList.remove('active');
+}
+
+// 5. Formspree Integration (Background Email Sending)
+var bookingForm = document.getElementById("hotel-booking-form");
+var eventForm = document.getElementById("event-hall-form");
+
+// Change "YOUR_ID_HERE" to your actual Formspree ID
+var formspreeUrl = "https://formspree.io/f/xjgzkqkb";
+
+bookingForm.addEventListener("submit", function(event) {
+event.preventDefault();
+var statusBtn = document.getElementById("booking-submit-btn");
+var data = new FormData(event.target);
+
+statusBtn.innerText = "Processing...";
+statusBtn.disabled = true;
+
+fetch(formspreeUrl, {
+method: "POST",
+body: data,
+headers: { 'Accept': 'application/json' }
+}).then(response => {
+if (response.ok) {
+alert('Payment Successful! Your reservation at Blue Mar Hotel is confirmed. A receipt has been sent to your email.');
+bookingForm.reset();
+closeModal('bookingModal');
+} else {
+alert("Oops! There was a problem confirming your reservation.");
+}
+}).catch(error => {
+alert("Oops! There was a problem confirming your reservation.");
+}).finally(() => {
+statusBtn.innerText = "Confirm Reservation";
+statusBtn.disabled = false;
+});
+});
+
+eventForm.addEventListener("submit", function(event) {
+event.preventDefault();
+var statusBtn = document.getElementById("event-submit-btn");
+var data = new FormData(event.target);
+
+statusBtn.innerText = "Sending Request...";
+statusBtn.disabled = true;
+
+fetch(formspreeUrl, {
+method: "POST",
+body: data,
+headers: { 'Accept': 'application/json' }
+}).then(response => {
+if (response.ok) {
+alert('Event Hall request submitted successfully! Our events management team will contact you shortly with a quote.');
+eventForm.reset();
+closeModal('eventModal');
+} else {
+alert("Oops! There was a problem sending your request.");
+}
+}).catch(error => {
+alert("Oops! There was a problem sending your request.");
+}).finally(() => {
+statusBtn.innerText = "Request Quote & Hold Date";
+statusBtn.disabled = false;
+});
+});
+</script>
+</body>
+</html>
